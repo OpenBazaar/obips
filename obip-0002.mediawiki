@@ -1,0 +1,197 @@
+<pre>
+  OBIP: 2
+  Title: Request Status of Funded Orders
+  Author: <a href="https://keybase.io/@drwasho">Dr Washington Y. Sanchez</a>
+  Status: Draft
+  Type: Standards Track
+  Created: 2016-12-14
+</pre>
+
+## Abstract
+
+- OpenBazaar has an inconsistent approach to publicly displaying the number of orders that a listing or store has received
+- The purpose of this OBIP is to specify one API that will request an array of funded orders, their status, and limited metadata (in order to protect user-privacy)
+
+## Motivation
+
+In OpenBazaar (v1), tracking the number of transactions on the network is difficult and inaccurate as stores do not report the number of funded orders they have received. The exception to this rule is when the Vendor has completed an order and the Buyer has left a rating. Here, the Buyer's rating is associated with the specific listing and the Bitcoin address used to fund the order. As a result, ratings serve as a proxy measurement for transaction volume in the marketplace.
+
+This is a problem for the following reasons:
+
+1. Ratings can under-represent the number of orders they have actually received as:
+    - Ratings are _optional_
+    - Sometimes ratings are not left by the Buyer after releasing funds
+    - No rating is left if the Buyer forgets to release funds in a transaction, which unfortunately is a common occurence
+2. It is therefore difficult for developers, projects, and businesses (building on top of OpenBazaar) to reliably measure the health of the marketplace by transaction volume
+3. It is difficult for Buyers to determine whether a store is popular or assess what proportion of orders are successful, refunded, or cancelled
+4. It is difficult for Buyers to choose a listing (or store) based on popularity
+
+**What is needed for OpenBazaar (v2) is a means of retrieving a list of all the funded orders that a store has received, and their status + rating (if applicable), while preserving the privacy concerns of Buyers and values of the project.**
+
+## Requirements
+
+Fundamentally, there are two requirements:
+
+1. Proof that the Vendor and the Buyer aren't the same person
+2. Proof that a Bitcoin transaction took place to the value of listing being rated
+
+## Specification
+
+We propose that OpenBazaar implementations support the following GET endpoint: `/ob/orders`
+
+The API will return the following information:
+
+- Display an array of funded orders that a Vendor has received
+- Each funded order in the array will contain:
+  - Basic information about the item
+  - The Bitcoin address used in the order (i.e. multisignature address)
+  - The order status of the funded order
+  - The review of the funded order **IF** `status: completed`
+
+**API Design**
+
+- _Parameters_
+  - `peerID`
+    - _blank_ will query self
+  - `slug`
+    - _blank_ will query all listings for <a style="color:grey">self</a> or the <a style="color:grey">target peer</a>
+    - The slug of a specific listing will return all funded orders for that listing
+- _Body Response_
+  - `hash`
+  - `slug`
+  - `vendorID`
+    - `guid`
+    - `pubkeys`
+      - `guid`
+      - `bitcoin`
+    - `bitcoinSig`
+  - `item`
+    - `title`
+    - `images`
+      - `filename`
+      - `tiny`
+  - `btcaddress`
+    - Bitcoin address used in the order (i.e. the multisignature address)
+  - `status`
+      - Will be one of these three possibilities:
+        - `funded`
+          - The order was received and funded, or
+          - The Vendor confirmed the order (i.e. 'shipped')
+        - `cancelled`
+          - The order was refunded, or
+          - A dispute was resolved in favor of the Buyer
+        - `completed`
+          - The funds were released as part of a successful order, or
+          - A dispute resolved in favor of the Vendor
+  - `ratings`
+    - `overall`
+    - `quality`
+    - `description`
+    - `deliverySpeed`
+    - `customerService`
+    - `review`
+    - `anonymous`
+
+```JSON
+{
+    "hash": "QmR7EjwLLZoMhsvPpPtMLy99TYmAdoLD8DQnwQDAdkF9W8",
+    "slug": "banana",
+    "title": "Banana",
+    "vendorID": {
+            "guid": "CAASpgQwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDCssJ4dYBIQGtv6OXLRwNYsuPd2/DMnpsqsD1hteG920BW9fpOFq17o1CGOuHsHcCrEV45ddDE1dND0u2cuKbZ0D+5exV4sjBlGOUbMgqEFKtkb89xeyLNyW2IXi9M8qnmpkX3GiJ1XBaNTXyeF+4Fosa0qOk9mKO1AgIbZstKEqth1lcTY5HRtMi1SyGmbs6/qUPDGPTovyrWH1aef3NFqJ3dFWZll+pFKAknFFk9mPcPT5nD8tculrr+1JvVNN4qMw2FJ7WkFWmto/7ebrBBl1YA9c7X5uvQ5f6cUzHcmRmk/MBs1uwKxriwg9nb7k2yopkZP0n1g8LjJWXzlrTgwQMZvxxy/yY7hZ2J1LeONg7G61EVBWIA9bx2QqcXeaXGK8rD6uG4V9V2P420pzq/qA2v0Ynbmm63hQq8eTYKw02EIMWbVGBKv2i7proRl7UE6Ry2fmG2QcPz4AwNm2RThB+nMOpwzX1l1/48yQukSkQBnp38QPE4TK+qbv4jh21lhvJL4grOGUEzijrWL5TTpwkr19uRhN31FCNdxjzfFAUTWcsdmKqKN8ICXr9Up2RU8HhBxZEgRIIi7aCwoU6yHPwKH0tn2KRX3ih0imR1LiYaUwYGet5dxjQqfjMjV2b+VC1HbkRPXQJEo8LVQrBaykcOjLN0xw3f04yxnP2xSwIDAQAB",
+            "bitcoin": "Ah8GJv+YweuLxnAnvl2phabbIFt8zjO4GCg/0TjS79wE",
+            "bitcoinSig": "MEQCICAbN7/Sy85nn58mKvtbiUoBwL2zqsNJJnhizWOBttNLAiBDJXezkXDP+5Z6lgSiFRn7kMxjSBXvX6LHHkZL7FcPOw=="
+          },
+    "thumbnail": {
+      "tiny": "QmRB6F17N222hmm8bHszYsZurJ9oDbrorrpyUqLiTH1kkU"
+    },
+    "btcaddress": "3FYn4z2iRQsvwe1cy14fKz1hQpqEec7uUk",
+    "status": "completed",
+    "ratings": {
+      "overall": 5,
+      "quality": 5,
+      "description": 5,
+      "deliverySpeed": 5,
+      "customerService": 5,
+      "review": "Tasted amazing!",
+      "anonymous": true
+    }
+  ```
+
+## Rationale
+
+_Advantages_
+
+- The healh of the marketplace can be determined directly via measuring transaction volume over time
+- Popular listing and stores can be discerned by users
+- Coin tracking
+  - Can be used to ensure that the Vendor isn't faking a 'real transaction' by reusing coins
+- Requiring evidence of a 'real transaction' associates a monetary **cost** with a rating
+  - Even a small barrier-to-entry is better than nothing
+
+_Disadvantages_
+
+- SPV wallets can't audit the entire UTXO
+  - Nodes will need to obtain the 'balance' of an address via third parties, compromising their privacy, or run a full node themselves (not an acceptable requirement)
+- Coin tracking
+  - By exposing the multisignature escrow address, anyone can trace the funds of Buyer and Vendor
+  - If either party have exposed their PIID in their transaction graph, their spending history on OpenBazaar will be revealed
+  - An attacker can use Coinbase or another online wallet to hide coin-reuse
+
+## Backwards Compatibility
+
+N/A as this currently affects the way we design the initial release of 2.0
+
+## Alternatives
+
+### 1. No reputation system
+
+- The Vendor includes are ratings with no link to a Bitcoin transaction or digital signature (or any sort)
+
+_Advantages_
+
+- Easy and simple
+
+_Disadvantages_
+
+- Anyone could trivially generate fake ratings and build a false positive/negative reputation for themself or someone else
+- No proof that a real transaction took place
+
+### 2. Vendor blind-signs the Buyer's rating
+
+- Once the Buyer has received the good or service, they create a _blinded_ message containing the rating
+  - The blinded message can be digitally signed using an ephemeral key OR with the GUID/Bitcoin private key
+  - In the latter case, the pubkey isn't revealed in order to protect the identity of the Buyer.
+- The Vendor digitally signs a _blinded_ rating
+- The Buyer then unblinds the message to reveal the plaintext rating, which doesn't invalidate signature
+- There is no link to a Bitcoin transaction
+
+_Advantages_
+
+- Vendors can cryptographicaly 'sponsor' a rating that:
+  - Prevents any user from leaving a fake rating against them
+  - Prevents the Vendor from refusing to sign a rating that they don't like or agree with
+
+_Disadvantages_
+
+- Ratings can be trivially generated using a script, so there is no proof that the Vendor is faking a rating
+  - If the Buyer digitally signs the rating without revealing the public key, the signature is worthless
+- No proof that a transaction took place
+
+### 3. Buyer declares GUID and Bitcoin multisignature address with the rating
+
+- The Buyer is forced to declare their GUID and the multisignature escrow address when leaving a rating
+
+_Advantages_
+
+- Proves that the Vendor and Buyer node are not the same
+  - This is a _weak proof_ as the one actor could be running two nodes
+  - To make this a _strong proof_, the nodes would have to be associated with the PIID of two seperate individuals via Blockchain ID or similar protocol
+  - Even with _strong proof_, prior collusion can never by cryptographically mitigated
+- Proves that a real Bitcoin transaction was made
+
+_Disadvanges_
+
+- 100% blows the privacy of the Buyer
+
+## Reference Implementation
