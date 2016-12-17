@@ -2,7 +2,7 @@
   OBIP: 1
   Title: OBIP Purpose and Guidelines
   Author: Tyler Smith <tyler@ob1.io>
-  Status: Draft
+  Status: Accepted
   Type: Process
   Created: 2016-08-16
 </pre>

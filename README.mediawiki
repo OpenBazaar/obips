@@ -13,5 +13,5 @@ Having an OBIP here does not make it a formally accepted standard until its stat
 | OBIP Purpose and Guidelines
 | Tyler Smith
 | Process
-| Draft
+| Accepted
 |}
