@@ -1,0 +1,449 @@
+__OBIP__: obip-search
+
+__Title__: 3rd Party Search Providers
+
+__Author__: Tyler Smith <tyler@ob1.io>
+
+__Discussions-To__: #3rd-party-search on Slack or <tyler@ob1.io>  
+
+__Status__: Draft
+
+__Type__: Standards Track
+
+__Created__: 03/25/2017
+
+__Copyright__: MIT
+
+
+## Abstract
+A specification for the API a search provider must comply with to work correctly
+within the reference OpenBazaar 2.0 client.
+
+
+## Motivation
+Decentralized discovery of content is a notoriously hard problem. Protocols like
+Bittorrent rely heavily upon centralized providers like MiniNova, Vodo, and Vuze
+to allow users to find the content they're looking for. OpenBazaar 1.0 relies
+heavily on duosear.ch to locate good content.
+
+To decentralize this experience as much as possible the OB1 team has proposed to
+create a standard API that _anybody_ may fulfil and plug into the client to give
+the user an in-app experience that is much richer than we can currently provide.
+
+While some popular implementations may be provided by default in the reference
+client, any URL that serves a compliant HTTPS JSON API should work as well as
+any other implementation.
+
+
+## Init Response Example
+
+A search provider must publish an entry point into their service. I will use the
+example `example.com` as the service provider in this OBIP.
+
+The entry point response from `curl example.com`:
+
+```json
+{
+  "name": "Example Search",
+
+  "logo": "https://example.com/logo.png",
+
+  "links": {
+    "self": "",
+    "listings": "https://search.ob1.io/search/listings"
+  },
+
+  "options": {
+    "origin": {
+      "type": "radio",
+      "label": "Origin",
+      "options": [
+        {
+          "value": "worldwide",
+          "label": "🌎 Worldwide",
+          "checked": true,
+          "default": true
+        },
+        {
+          "value": "us",
+          "label": "🇺🇸 United States",
+          "checked": false,
+          "default": false
+        },
+        {
+          "value": "de",
+          "label": "🇩🇪 Germany",
+          "checked": false,
+          "default": false
+        }
+      ]
+    },
+    "rating": {
+      "type": "radio",
+      "label": "Rating",
+      "options": [
+        {
+          "value": "5",
+          "label": "⭐⭐⭐⭐⭐",
+          "checked": true,
+          "default": true
+        },
+        {
+          "value": "4",
+          "label": "⭐⭐⭐⭐ \u0026 up",
+          "checked": false,
+          "default": false
+        },
+        {
+          "value": "3",
+          "label": "⭐⭐⭐ \u0026 up",
+          "checked": false,
+          "default": false
+        },
+        {
+          "value": "2",
+          "label": "⭐⭐ \u0026 up",
+          "checked": false,
+          "default": false
+        },
+        {
+          "value": "1",
+          "label": "⭐ \u0026 up",
+          "checked": false,
+          "default": false
+        }
+      ]
+    },
+    "shipping": {
+      "type": "dropdown",
+      "label": "Shipping",
+      "options": [
+        {
+          "value": "worldwide",
+          "label": "🌎 Worldwide",
+          "checked": true,
+          "default": true
+        },
+        {
+          "value": "us",
+          "label": "🇺🇸 United States",
+          "checked": false,
+          "default": false
+        },
+        {
+          "value": "de",
+          "label": "🇩🇪 Germany",
+          "checked": false,
+          "default": false
+        }
+      ]
+    }
+  },
+
+  "sortBy": {
+    "price-asc": {
+      "label": "Price (Low to High)",
+      "selected": false,
+      "default": false
+    },
+    "price-desc": {
+      "label": "Price (High to Low)",
+      "selected": false,
+      "default": false
+    },
+    "relevance": {
+      "label": "Relevance",
+      "selected": false,
+      "default": true
+    }
+  }
+}
+```
+
+
+## Init response Explanation
+
+
+- `name` is the displayed name of the Service
+
+- `logo` is the displayed image next to the name for branding
+
+- `links` is an object providing the URI of important endpoints
+  - `self` is the canonical URI for the endpoint of the Service
+  - `listings` is the canonical URI for the listing search
+
+- `options` is a list of filters that are displayed with search results to
+allow for more refined searching. It is a completely optional value; they
+are not required. How a Service handled given options is completely up to
+them. The client on requires a given structure for announcing the filters
+so they may be displayed in the client application. There are no special
+options, they are treated equally and rendered in the order given. A few
+example options are shown above, but are not required or "blessed" in
+any way.
+
+  - The key of an `options` object is the "name" of the object. It is what is sent in the URL of a search as the key in the query params.
+  - The `type` property of the object specifies the type of filter that option is. The currently supported option types are: radio, checkbox, and dropdown
+  - The `label` property is the value displayed in the application
+  - The `options` property is a list of options for the filter.
+  - Its `value` and `label` properties work the same as the root-level `options` key and `label` values respectively.
+  - `checked` is a boolean indicating that filter is applied in the response.
+  - `default` is a boolean indicating that filter is applied by default.
+ 
+- `sortBy` is a list of sort options available for search. Like `options` it is completely optional and the Service is responsible for handling sorting correctly.
+
+  - The key is the key used in the query paramaters of the search request
+  - The `label` property is the displayed value
+  - The `selected` property denotes the selected search value
+  - The `default` property denotes the value is the default value
+
+# Listing Search Response Example
+
+```json
+{
+  "name": "OB1",
+  "logo": "https://ob1.io/logo.png",
+  "options": {
+    "origin": {
+      "type": "radio",
+      "label": "Origin",
+      "options": [
+        {
+          "value": "worldwide",
+          "label": "🌎 Worldwide",
+          "checked": true,
+          "default": true
+        },
+        {
+          "value": "us",
+          "label": "🇺🇸 United States",
+          "checked": false,
+          "default": false
+        },
+        {
+          "value": "de",
+          "label": "🇩🇪 Germany",
+          "checked": false,
+          "default": false
+        }
+      ]
+    },
+    "rating": {
+      "type": "radio",
+      "label": "Rating",
+      "options": [
+        {
+          "value": "5",
+          "label": "⭐⭐⭐⭐⭐",
+          "checked": true,
+          "default": true
+        },
+        {
+          "value": "4",
+          "label": "⭐⭐⭐⭐ \u0026 up",
+          "checked": false,
+          "default": false
+        },
+        {
+          "value": "3",
+          "label": "⭐⭐⭐ \u0026 up",
+          "checked": false,
+          "default": false
+        },
+        {
+          "value": "2",
+          "label": "⭐⭐ \u0026 up",
+          "checked": false,
+          "default": false
+        },
+        {
+          "value": "1",
+          "label": "⭐ \u0026 up",
+          "checked": false,
+          "default": false
+        }
+      ]
+    },
+    "shipping": {
+      "type": "dropdown",
+      "label": "Shipping",
+      "options": [
+        {
+          "value": "worldwide",
+          "label": "🌎 Worldwide",
+          "checked": true,
+          "default": true
+        },
+        {
+          "value": "us",
+          "label": "🇺🇸 United States",
+          "checked": false,
+          "default": false
+        },
+        {
+          "value": "de",
+          "label": "🇩🇪 Germany",
+          "checked": false,
+          "default": false
+        }
+      ]
+    }
+  },
+  "sortBy": {
+    "price-asc": {
+      "label": "Price (Low to High)",
+      "selected": false,
+      "default": false
+    },
+    "price-desc": {
+      "label": "Price (High to Low)",
+      "selected": false,
+      "default": false
+    },
+    "relevance": {
+      "label": "Relevance",
+      "selected": true,
+      "default": true
+    }
+  },
+  "links": {
+    "self": "https://search.ob1.io/search?q=air\u0026pretty\u0026shipping=us",
+    "search": "https://search.ob1.io/search",
+    "listings": "https://search.ob1.io/search/listings"
+  },
+  "results": {
+    "total": 5672,
+    "morePages": true,
+    "results": [
+      {
+        "type": "listing",
+        "relationships": {
+          "vendor": {
+            "data": {
+              "id": "QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
+              "handle": "@yPayne",
+              "avatarHashes": {
+                "tiny": "QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+                "small": "QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ",
+                "medium": "QmS1z4qW1SiDNtLD1Bfno8WEbFUV8qwb5CQxgR6BREyVTJ",
+                "original": "QmRSJfL6rEuZ6fBaCfd1ZYXHTnPKj4ZZuEuMsNmbbFjLfH",
+                "large": "QmWoNr88v9dnsJAZBkuZJAXjPGn1MBLobp3S6F8NnuZ1m3"
+              }
+            }
+          }
+        },
+        "data": {
+          "hash": "",
+          "slug": "air-direct-amplifier",
+          "title": "Air Direct Amplifier",
+          "tags": [
+            "culpa",
+            "nihil",
+            "sit",
+            "nesciunt",
+            "ad",
+            "accusamus",
+            "sit"
+          ],
+          "categories": [
+            "Digital Goods"
+          ],
+          "contractType": "DIGITAL_GOOD",
+          "description": "unde illo tempore omnis corporis repellat non. et eum excepturi ipsam alias quae.\tquia voluptates sed et provident qui. inventore eligendi vel autem modi asperiores autem sed.",
+          "thumbnail": {
+            "tiny": "QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+            "small": "QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ",
+            "medium": "QmS1z4qW1SiDNtLD1Bfno8WEbFUV8qwb5CQxgR6BREyVTJ",
+            "original": "QmRSJfL6rEuZ6fBaCfd1ZYXHTnPKj4ZZuEuMsNmbbFjLfH",
+            "large": "QmWoNr88v9dnsJAZBkuZJAXjPGn1MBLobp3S6F8NnuZ1m3"
+          },
+          "language": "",
+          "price": {
+            "currencyCode": "btc",
+            "amount": 34
+          },
+          "nsfw": true
+        }
+      },
+      {
+        "type": "listing",
+        "relationships": {
+          "vendor": {
+            "data": {
+              "id": "QmSJNNBacfjY9F6gPizFpfpgwpGfpRy8LWKRPN6At9AgbU",
+              "handle": "@KimberlyHicks",
+              "avatarHashes": {
+                "tiny": "QmeSjo2YMdEaMzt1JCviDCfVZ1aGJdFvRKfjQf3sHe5ZgG",
+                "small": "QmcyVgwCXg3phR6NbRHK5sDZFyyH4pBLh1TGGkWCWT68hV",
+                "medium": "QmX3fhZXxPUpNsqdGZtsdaSSJApDptfFcSKWbCoHXJHXLo",
+                "original": "QmZuZ7W2yJ8tsvhKTcXu2zyZZoMxTqSEK6zKQUpefQbt4t",
+                "large": "QmPrN4Li71nsmZ2SjAYhrVgDAaDYN34dWyg2gS4Ubz942d"
+              }
+            }
+          }
+        },
+        "data": {
+          "hash": "",
+          "slug": "air-air-compressor",
+          "title": "Air Air Compressor",
+          "tags": [
+            "rem",
+            "id",
+            "eum",
+            "doloribus",
+            "magnam",
+            "quaerat",
+            "et",
+            "quaerat"
+          ],
+          "categories": [
+            "Arts"
+          ],
+          "contractType": "SERVICE",
+          "description": "ut sunt suscipit labore dolore.\tet ab voluptates. sit reiciendis vero vel sit reiciendis. autem velit soluta voluptate vel quia.\toptio quia omnis voluptatem nemo.",
+          "thumbnail": {
+            "tiny": "QmeSjo2YMdEaMzt1JCviDCfVZ1aGJdFvRKfjQf3sHe5ZgG",
+            "small": "QmcyVgwCXg3phR6NbRHK5sDZFyyH4pBLh1TGGkWCWT68hV",
+            "medium": "QmX3fhZXxPUpNsqdGZtsdaSSJApDptfFcSKWbCoHXJHXLo",
+            "original": "QmZuZ7W2yJ8tsvhKTcXu2zyZZoMxTqSEK6zKQUpefQbt4t",
+            "large": "QmPrN4Li71nsmZ2SjAYhrVgDAaDYN34dWyg2gS4Ubz942d"
+          },
+          "language": "",
+          "price": {
+            "currencyCode": "btc",
+            "amount": 29
+          },
+          "nsfw": true
+        }
+      }
+    ]
+  }
+}
+```
+
+# Listing Search Response Explanation
+
+- `name`, `logo`, `links`, `options`, and `sortBy` are exactly the same as the in the Init response
+- `results` contains the search results for the given query
+  - `total` is the total number of matching documents the Service can return (not the number it _did_ return)
+  - `morePages` specifies that there is at least one more partial or full page of results available
+  - `results` is an array of "listing" results of the following format
+    - `type` is a property denoting the type of the returned object. This *must* be "listing" for listing results. In the future it can be another type, e.g. "node"
+    - `relationships` is an object with useful information about related objects. Currently the only related object included is the `vendor`
+      - The `vendor`'s `data` properties contains the following information about the vendor
+      - `id` The PeerID of the vendor
+      - `handle` is the available Blockstack (or other naming system's) handle of the vendor
+      - `avatarHashes` is an object of hashes to various sizes of the vendor's avatar
+        - `tiny`, `small`, and `medium` are planned for use.`original` and `large` are reserved for use in the future but may be sent now preemptively
+    - The `data` object represents the listing data itself
+      - `hash`, `slug`, `title`, `tags`, `contractType`, `description`, `thumbnail`, `language`, `price`, and `nsfw` should be the same as provided by the listing
+      - `categories` is an array of categories as determined by the Service provider. It may use categories given by the vendor or using a custom algorithm
+
+# Reccomended Search Endpoint Flags
+
+The reference client shall send the follow parameters to search providers on all search requests, and search providers should respond accordingly.
+
+Flag | Type | Description
+--- | --- | ---
+`p` | Integer | Page; controls which pages of results should be sent
+`ps` | Integer |Page Size; controls how many results should be sent per page
+`nsfw` | Boolean | Controls whether or not to return adult listings
