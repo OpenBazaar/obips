@@ -175,6 +175,30 @@ bottom of the view and gives the ability to link to another page. The user profi
 }
 </pre>
 
+====PaginatedUserView====
+The user card equivilent of PaginatedListingView.
+
+<pre>
+{  
+   "type":"USER_GRID_VIEW",
+   "users":[  
+      {  
+          "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
+          "handle":"yPayne.id",
+          "avatarHashes":{  
+             "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+             "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+          },
+          "headerHashes":{  
+             "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+             "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+          },
+          "shortDescription": "Webstore specialized in selling unique, interesting and high-quality..."  
+      }
+   ]
+}
+</pre>
+
 ====SlideshowView====
 An full width view which rotates through the provided image views.
 
