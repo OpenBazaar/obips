@@ -116,6 +116,7 @@ Similar to the ListingGridView but designed to allow a large number of listing c
 <pre>
 {  
    "type":"PAGINATED_LISTING_VIEW",
+   "count": 200,
    "listings":[  
       {  
          "vendor":{  
@@ -180,7 +181,8 @@ The user card equivilent of PaginatedListingView.
 
 <pre>
 {  
-   "type":"USER_GRID_VIEW",
+   "type":"PAGINATED_USER_VIEW",
+   "count": 200,
    "users":[  
       {  
           "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
