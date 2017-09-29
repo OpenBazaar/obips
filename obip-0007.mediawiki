@@ -216,11 +216,13 @@ The user card equivilent of PaginatedListingView.
 </pre>
 
 ====SlideshowView====
-An full width view which rotates through the provided image views.
+A view which which rotates through the provided image views.
 
 <pre>
 {
   "type": "SLIDESHOW_VIEW",
+  "height": 250,
+  "width": 400,
   "images": [
     {
       "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
@@ -264,11 +266,12 @@ A list of categories for the client to render. The optional field <code>breadcru
 </pre>
 
 ====HBox====
-An HBox allows ImageViews to be aligned horizontally next to each other. HBoxes can be nested inside other HBoxes or inside VBoxes. Only ImageViews, HBoxes, and VBoxes are currently supported inside HBoxes. All other types should be ignored. 
+An HBox allows ImageViews to be aligned horizontally next to each other. HBoxes can be nested inside other HBoxes or inside VBoxes. Only ImageViews, TextViews, HBoxes, and VBoxes are currently supported inside HBoxes. All other types should be ignored. 
 
 <pre>
 {
   "type": "HBOX",
+  "padding": 10,
   "views": [
   	{
 	  "type": "IMAGE_VIEW",
@@ -289,11 +292,12 @@ An HBox allows ImageViews to be aligned horizontally next to each other. HBoxes 
 </pre>
 
 ====VBox====
-A VBox allows ImageViews to be aligned vertically on top of each other. VBoxes can be nested inside other VBoxes or inside HBoxes. Only ImageViews, HBoxes, and VBoxes are currently supported inside VBoxes. All other types should be ignored. 
+A VBox allows ImageViews to be aligned vertically on top of each other. VBoxes can be nested inside other VBoxes or inside HBoxes. Only ImageViews, TextViews, HBoxes, and VBoxes are currently supported inside VBoxes. All other types should be ignored. 
 
 <pre>
 {
   "type": "VBOX",
+  "padding": 10,
   "views": [
   	{
 	  "type": "IMAGE_VIEW",
