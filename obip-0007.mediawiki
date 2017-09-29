@@ -14,7 +14,7 @@
 Channels are a feature designed to improve the browsing experience in OpenBazaar. Being a decentralized application OpenBazaar faces challenges
 displaying interesting, relevant, and timely content to users. Most e-commerce platforms solve this problem by using their access to their centralized listing database
 to curate content for their home page or category landing pages. Since most OpenBazaar implemenations are oriented towards consumers and run on either home computers
-on or in web browsers, it's not feasible for the software to index all listings. 
+on or mobile devices, it's not feasible for the software to index all listings. 
 
 One strategy for dealing with this limmitation is to have the application download content from a centralized curator. While this approach would mostly work, it goes strongly
 against OpenBazaar's core value of decentralization.
@@ -57,7 +57,7 @@ The current <code>version</code> is 1.
 ===Types of Views===
 	
 ====ImageView====
-Self explanatory. Used for banner images, product promotions, etc. Images should be hosted on IPFS and can optionally link to a product or another page. Links may use either ob:// (for listings, user pages, or channel pages) or http:// (for channel pages only).
+Self explanatory. Used for banner images, product promotions, etc. Images should be hosted on IPFS and can optionally link to a product or another page. Links may use either <code>ob://</code> (for listings, user pages, or channel pages) or <code>http://</code> (for channel pages only).
 
 <pre>
 {
@@ -217,7 +217,7 @@ An full width view which rotates through the provided image views.
 </pre>
 
 ====CategoryView====
-A list of categories for the client to render. The optional field `breadcrumbs` is used to display the current nesting.
+A list of categories for the client to render. The optional field <code>breadcrumbs</code> is used to display the current nesting.
 
 <pre>
 {
@@ -279,7 +279,7 @@ A VBox allows ImageViews to be aligned vertically on top of each other. VBoxes c
 
 <pre>
 {
-  "type": "HBOX",
+  "type": "VBOX",
   "views": [
   	{
 	  "type": "IMAGE_VIEW",
