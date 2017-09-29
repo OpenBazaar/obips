@@ -34,7 +34,7 @@ A <b>view</b> is the most basic element on a page. It contains the data to be di
 ==Specification==
 ===Channel Schema===
 
-The channel schema consists of a JSON object containing some metadata and a list of views:
+The channel schema consists of a JSON object containing some metadata and a list of views (to be rendered in order veriticaly):
 
 <pre>
 {
