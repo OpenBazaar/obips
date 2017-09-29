@@ -40,6 +40,7 @@ The channel schema consists of a JSON object containing some metadata and a list
 {
   "name": "OB1",
   "logo": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+  "slug": "index",
   "searchEndpoint": "https://search.ob1.io/search/listings",
   "onClick": "https://clickdata.ob1.io/channel",
   "onLoad": "https://loaddata.ob1.io/channel",
@@ -50,8 +51,8 @@ The channel schema consists of a JSON object containing some metadata and a list
 }
 </pre>
 
-Only <code>name</code>, <code>logo</code>, and <code>views</code> are required. <code>onClick</code> and <code>onLoad</code> are endpoints which clients are expected to POST to for data collection purposes. The POST body should contain the loaded page URI for <code>onLoad</code> or the URL of the clicked item for <code>onClick</code>.
-The current <code>version</code> is 1.
+Only <code>name</code>, <code>logo</code>, <code>slug</code> and <code>views</code> are required. <code>onClick</code> and <code>onLoad</code> are endpoints which clients are expected to POST to for data collection purposes. The POST body should contain the loaded page URI for <code>onLoad</code> or the URL of the clicked item for <code>onClick</code>.
+The current <code>version</code> is 1. <code>Slug</code> must unique for each page and set to <code>index</code> for the main channel page. 
 
 
 ===Types of Views===
