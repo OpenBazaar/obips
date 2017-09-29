@@ -328,7 +328,7 @@ Clients should be able to fetch the main page json from either source.
 ==Extensibility==
 Clients should ignore view types they do not know how to parse. This allows us to introduce new views without breaking old clients.
 
-==FAQS==
+==FAQ==
 <blockquote>Will the channel be slow to load and provide a bad experience?</blockquote>
 
 This OBIP calls for listing data and user data to be provided in each view which means the only loading that needs to be done is the initial JSON document and images. It would be great to make it so these views do not need to provide the data and instead it could be fetched from IPNS but current IPNS speeds are too slow for this to be feasible. As IPNS optimizations come to fruition this option can be revisted.
