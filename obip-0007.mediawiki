@@ -1,0 +1,195 @@
+<pre>
+  OBIP: obip-xxx
+  Title: Channels
+  Author: Chris Pacia <chris@ob1.io>
+  Discussions-To: #openbazaar-2_0 on Slack or <chris@ob1.io>
+  Status: Draft
+  Type: Standards Track
+  Created: 2017-9-27
+  License: Public Domain
+</pre>
+
+==Abstract==
+
+Channels are a feature designed to improve the browsing experience in OpenBazaar. Being a decentralized application OpenBazaar faces challenges
+displaying interesting, relevant, and timely content to users. Most e-commerce platforms solve this problem by using their access to their centralized listing database
+to curate content for their home page or category landing pages. Since most OpenBazaar implemenations are oriented towards consumers and run on either home computers
+on or in web browsers, it's not feasible for the software to index all listings. 
+
+One strategy for dealing with this limmitation is to have the application download content from a centralized curator. While this approach would mostly work, it goes strongly
+against OpenBazaar's core value of decentralization.
+
+The alternative presented here is to open the curation to everyone and allow users to seed their curated content on the OpenBazaar network. By allowing everyone to participate
+in curation we avoid having a single point of failure. Futher we can take advange of OpenBazaar's distributed architecture to distribute the content around the network ensuring
+the data will remain available even if the content creator is offline. 
+
+==Definitions==
+
+A <b>channel</b> is one or more user curated <b>pages</b> of content.
+
+A <b>page</b> is a static JSON document containing one or more <b>views</b> that is interpreted by clients. Pages can contain links to other pages creating a browsing experience similar to that of the web.
+
+A <b>view</b> is the most basic element on a page. It contains the data to be displayed and information about how to display it. 
+
+==Specification==
+===Channel Schema===
+
+The channel schema consists of a JSON object containing some metadata and a list of views:
+
+<pre>
+{
+  "name": "OB1",
+  "logo": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+  "searchEndpoint": "https://search.ob1.io/search/listings",
+  "onClick": "https://data.ob1.io/channel",
+  "onLoad": "https://data.ob1.io/channel",
+  "version": 1,
+  "views": [
+    // views here
+  ]
+}
+</pre>
+
+Only <code>name</code>, <code>logo</code>, and <code>views</code> are required. <code>onClick</code> and <code>onLoad</code> are endpoints which clients are expected to POST to for data collection purposes. The POST body should contain the current for <code>onLoad</code> or the url of the clicked item for <code>onClick</code>.
+The current <code>version</code> is 1.
+
+
+===Types of Views===
+	
+====ImageView====
+Self explanatory. Used for banner images, product promotions, etc. Images should be hosted on IPFS and can optionally link to a product or another page. Links may use either ob:// or http://.
+
+<pre>
+{
+  "type": "IMAGE_VIEW",
+  "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page"
+} 
+</pre>
+
+====ListingGridView====
+A 4 by x grid of listing cards. `Title` should be displayed at the top of the view. `Button` is optional and it displays at the
+bottom of the view and gives the ability to link to another page. The listing data must be included.
+
+<pre>
+{  
+   "type":"LISTING_GRID_VIEW",
+   "title":"New Listings",
+   "button":{  
+      "Text":"See More",
+      "Link":"ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page"
+   },
+   "listings":[  
+      {  
+         "vendor":{  
+            "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
+            "handle":"@yPayne",
+            "avatarHashes":{  
+               "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+               "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+            }
+         },
+         "data":{  
+            "hash":"zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+            "slug":"air-direct-amplifier",
+            "title":"Air Direct Amplifier",
+            "thumbnail":{  
+               "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ",
+               "medium":"QmS1z4qW1SiDNtLD1Bfno8WEbFUV8qwb5CQxgR6BREyVTJ"
+            },
+            "price":{  
+               "currencyCode":"btc",
+               "amount":34
+            },
+            "nsfw":true
+         }
+      }
+   ]
+}
+</pre>
+
+====UserGridView====
+A 4 by x grid of user cards. <code>Title</code> should be displayed at the top of the view. <code>Button</code> is optional and it displays at the
+bottom of the view and gives the ability to link to another page. The user profile data must be included.
+
+<pre>
+{  
+   "type":"User_GRID_VIEW",
+   "title":"Top vendors",
+   "button":{  
+      "Text":"See More",
+      "Link":"ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page"
+   },
+   "users":[  
+      {  
+          "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
+          "handle":"yPayne.id",
+          "avatarHashes":{  
+             "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+             "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+          },
+          "headerHashes":{  
+             "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+             "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+          },
+          "shortDescription": "Webstore specialized in selling unique, interesting and high-quality..."  
+      }
+   ]
+}
+</pre>
+
+====SlideshowView====
+An full width view which rotates through the provided image views.
+
+<pre>
+{
+  "type": "SLIDESHOW_VIEW",
+  "images": [
+    {
+      "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page"
+    }
+  ]
+} 
+</pre>
+
+====CategoryView====
+A list of categories for the client to render. The optional field `breadcrumbs` is used to display the current nesting.
+
+<pre>
+{
+  "type": "CATEGORY_VIEW",
+  "categories": [
+    {
+      "name": "Marvel",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/marvel"
+    },
+    {
+      "name": "Spiderman",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/spiderman"
+    },
+    {
+      "name": "Superman",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/superman"
+    }
+  ],
+  "breadcrumbs": [
+    {
+      "name": "Books",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/books"
+    },
+    {
+      "name": "Comic Books",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/comic_books"
+    }
+  ]
+} 
+</pre>
+
+==Loading a channel==
+
+When entering and saving a new channel a user should be able to enter either an OB URI (ob://ob1.io/channel) or HTTP URL (https://ob1.io/channel). 
+Clients should be able to fetch the main page json from either source.
+
+==Extensibility==
+Clients should ignore view types they do not know how to parse. This allows us to introduce new views without breaking old clients.
