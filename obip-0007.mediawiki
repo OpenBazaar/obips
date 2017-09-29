@@ -76,6 +76,7 @@ Display text on the page.
 <pre>
 {
   "type": "TEXT_VIEW",
+  "text": "Welcome to my channel!",
   "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
   "size": 28,
   "align": "center"
