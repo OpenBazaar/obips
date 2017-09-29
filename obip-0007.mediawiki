@@ -70,6 +70,18 @@ Self explanatory. Used for banner images, product promotions, etc. Images should
 } 
 </pre>
 
+====TextView====
+Display text on the page.
+
+<pre>
+{
+  "type": "TEXT_VIEW",
+  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+  "size": 28,
+  "align": "center"
+} 
+</pre>
+
 ====ListingGridView====
 A 4 by x grid of listing cards. <code>Title</code> should be displayed at the top of the view. <code>Button</code> is optional and it displays at the
 bottom of the view and gives the ability to link to another page. The listing data must be included.
