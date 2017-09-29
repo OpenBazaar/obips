@@ -110,6 +110,41 @@ bottom of the view and gives the ability to link to another page. The listing da
 }
 </pre>
 
+====PaginatedListingView====
+Similar to the ListingGridView but designed to allow a large number of listing cards to be displayed on the page by using pagination. Clients are free to decide how many listings to display per page and whether or not to offer sorting functionality.
+
+<pre>
+{  
+   "type":"PAGINATED_LISTING_VIEW",
+   "listings":[  
+      {  
+         "vendor":{  
+            "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
+            "handle":"@yPayne",
+            "avatarHashes":{  
+               "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+               "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+            }
+         },
+         "data":{  
+            "hash":"zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+            "slug":"air-direct-amplifier",
+            "title":"Air Direct Amplifier",
+            "thumbnail":{  
+               "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ",
+               "medium":"QmS1z4qW1SiDNtLD1Bfno8WEbFUV8qwb5CQxgR6BREyVTJ"
+            },
+            "price":{  
+               "currencyCode":"btc",
+               "amount":34
+            },
+            "nsfw":true
+         }
+      }
+   ]
+}
+</pre>
+
 ====UserGridView====
 A 4 by x grid of user cards. <code>Title</code> should be displayed at the top of the view. <code>Button</code> is optional and it displays at the
 bottom of the view and gives the ability to link to another page. The user profile data must be included.
