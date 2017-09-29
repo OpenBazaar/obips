@@ -347,7 +347,9 @@ Channels served via IPNS will drop out of the network after a week if the creato
 
 <blockquote>How does a user actually curate a channel? Do they need a crawler? What tool do they use? Or is it entirely a manual process?</blockquote>
 
-Curation is not specified by this OBIP as it will depend on the tools available to the user. API calls to create, update, and publish a channel are pretty easy to create and fairly easy to use. Less technical users will probably need to wait until UIs are created which make building channels more user friendly. Even without such UIs simply creating a JSON text file is orders of magnitude easier to do than building a search engine and a step in the right direction. 
+Curation is not specified by this OBIP as it will depend on the tools available to the user. API calls to create, update, and publish a channel are pretty easy to create and fairly easy to use. Crawlers are not needed per se as curators can find listings via other channels or via search. Though specialized crawlers might be desireable for curating listings behind Tor, as an example. Open source crawlers that do this already exist.
+
+Less technical users will probably need to wait until UIs are created which make building channels more user friendly. Even without such UIs simply creating a JSON text file is orders of magnitude easier to do than building a search engine and a step in the right direction. 
 
 <blockquote>Is the average person going to do this? What is their incentive to do so?</blockquote>
 
