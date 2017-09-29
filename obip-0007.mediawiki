@@ -63,7 +63,9 @@ Self explanatory. Used for banner images, product promotions, etc. Images should
 {
   "type": "IMAGE_VIEW",
   "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
-  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page"
+  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+  "height": 275,
+  "width": 580
 } 
 </pre>
 
@@ -182,6 +184,56 @@ A list of categories for the client to render. The optional field `breadcrumbs` 
       "name": "Comic Books",
       "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/comic_books"
     }
+  ]
+} 
+</pre>
+
+====HBox====
+An HBox allows ImageViews to be aligned horizontally next to each other. HBoxes can be nested inside other HBoxes or inside VBoxes. Only ImageViews are currently supported inside HBoxes. All other types should be ignored. 
+
+<pre>
+{
+  "type": "HBOX",
+  "views": [
+  	{
+	  "type": "IMAGE_VIEW",
+	  "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+	  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+	  "height": 275,
+	  "width": 580
+	},
+	{
+	  "type": "IMAGE_VIEW",
+	  "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+	  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+	  "height": 275,
+	  "width": 580
+	} 
+  ]
+} 
+</pre>
+
+====VBox====
+A VBox allows ImageViews to be aligned vertically on top of each other. VBoxes can be nested inside other VBoxes or inside HBoxes. Only ImageViews are currently supported inside VBoxes. All other types should be ignored. 
+
+<pre>
+{
+  "type": "HBOX",
+  "views": [
+  	{
+	  "type": "IMAGE_VIEW",
+	  "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+	  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+	  "height": 275,
+	  "width": 580
+	},
+	{
+	  "type": "IMAGE_VIEW",
+	  "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+	  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+	  "height": 275,
+	  "width": 580
+	} 
   ]
 } 
 </pre>
