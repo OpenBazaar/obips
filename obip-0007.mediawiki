@@ -57,7 +57,7 @@ The current <code>version</code> is 1.
 ===Types of Views===
 	
 ====ImageView====
-Self explanatory. Used for banner images, product promotions, etc. Images should be hosted on IPFS and can optionally link to a product or another page. Links may use either ob:// or http://.
+Self explanatory. Used for banner images, product promotions, etc. Images should be hosted on IPFS and can optionally link to a product or another page. Links may use either ob:// (for listings, user pages, or channel pages) or http:// (for channel pages only).
 
 <pre>
 {
