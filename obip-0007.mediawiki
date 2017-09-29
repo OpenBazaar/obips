@@ -116,7 +116,7 @@ bottom of the view and gives the ability to link to another page. The user profi
 
 <pre>
 {  
-   "type":"User_GRID_VIEW",
+   "type":"USER_GRID_VIEW",
    "title":"Top vendors",
    "button":{  
       "Text":"See More",
