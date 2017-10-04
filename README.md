@@ -6,3 +6,4 @@ Having an OBIP here does not make it a formally accepted standard until its stat
 |:-------|:------|:-------|:-----|:-------|
 | [1](./obip-0001.mediawiki) | OBIP Purpose and Guidelines | Tyler Smith | Process | Accepted
 | [2](./obip-0002.md) | 3rd Party Search | Tyler Smith | Standards | Draft
+| [3](./obip-0003.mediawiki) | Channels | Chris Pacia | Standards | Draft

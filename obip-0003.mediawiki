@@ -1,8 +1,8 @@
 <pre>
-  OBIP: obip-xxx
+  OBIP: 3
   Title: Channels
   Author: Chris Pacia <chris@ob1.io>
-  Discussions-To: #openbazaar-2_0 on Slack or <chris@ob1.io>
+  Discussions-To: #openbazaar-2_0 on Slack, Github Issues, or <chris@ob1.io>
   Status: Draft
   Type: Standards Track
   Created: 2017-9-27
