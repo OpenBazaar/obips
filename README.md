@@ -8,3 +8,4 @@ Having an OBIP here does not make it a formally accepted standard until its stat
 | [2](./obip-0002.md) | 3rd Party Search | Tyler Smith | Standards | Draft
 | [3](./obip-0003.mediawiki) | Channels | Chris Pacia | Standards | Draft
 | [4](./obip-0004.md) | Posts | Washington Sanchez | Standards | Draft
+| [5](./obip-0005.md) | Classifieds | Washington Sanchez | Standards | Draft
