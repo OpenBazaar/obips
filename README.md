@@ -2,16 +2,7 @@ People wishing to submit OBIPs, first should propose their idea or document to t
 
 Having an OBIP here does not make it a formally accepted standard until its status becomes Active. For an OBIP to become Active acceptance by a majority of the community.
 
-{| class="wikitable sortable" style="width: auto; text-align: center; font-size: smaller; table-layout: fixed;"
-!Number
-!Title
-!Owner
-!Type
-!Status
-|- style="background-color: #cfffcf"
-| [[obip-0001.mediawiki|1]]
-| OBIP Purpose and Guidelines
-| Tyler Smith
-| Process
-| Accepted
-|}
+| Number | Title |  Owner | Type | Status |
+|:-------|:------|:-------|:-----|:-------|
+| [1](./obip-0001.mediawiki) | OBIP Purpose and Guidelines | Tyler Smith | Process | Accepted
+| [2](./obip-0002.md) | 3rd Party Search | Tyler Smith | Standards | Draft
