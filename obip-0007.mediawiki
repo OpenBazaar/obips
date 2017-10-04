@@ -1,0 +1,368 @@
+<pre>
+  OBIP: obip-xxx
+  Title: Channels
+  Author: Chris Pacia <chris@ob1.io>
+  Discussions-To: #openbazaar-2_0 on Slack or <chris@ob1.io>
+  Status: Draft
+  Type: Standards Track
+  Created: 2017-9-27
+  License: Public Domain
+</pre>
+
+==Abstract==
+
+Channels are a feature designed to improve the browsing experience in OpenBazaar. Being a decentralized application OpenBazaar faces challenges
+displaying interesting, relevant, and timely content to users. Most e-commerce platforms solve this problem by using their access to their centralized listing database
+to curate content for their home page or category landing pages. Since most OpenBazaar implemenations are oriented towards consumers and run on either home computers
+on or mobile devices, it's not feasible for the software to index all listings. 
+
+One strategy for dealing with this limmitation is to have the application download content from a centralized curator. While this approach would mostly work, it goes strongly
+against OpenBazaar's core value of decentralization.
+
+The alternative presented here is to open the curation to everyone and allow users to seed their curated content on the OpenBazaar network. By allowing everyone to participate
+in curation we avoid having a single point of failure. Futher we can take advange of OpenBazaar's distributed architecture to distribute the content around the network ensuring
+the data will remain available even if the content creator is offline. 
+
+==Definitions==
+
+A <b>channel</b> is one or more user curated <b>pages</b> of content.
+
+A <b>page</b> is a static JSON document containing one or more <b>views</b> that is interpreted by clients. Pages can contain links to other pages creating a browsing experience similar to that of the web.
+
+A <b>view</b> is the most basic element on a page. It contains the data to be displayed and information about how to display it. 
+
+==Specification==
+===Channel Schema===
+
+The channel schema consists of a JSON object containing some metadata and a list of views (to be rendered in order veriticaly):
+
+<pre>
+{
+  "name": "OB1",
+  "logo": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+  "slug": "index",
+  "lastUpdated": ""2017-09-28T03:15:51.785762669Z",
+  "searchEndpoint": "https://search.ob1.io/search/listings",
+  "onClick": "https://clickdata.ob1.io/channel",
+  "onLoad": "https://loaddata.ob1.io/channel",
+  "version": 1,
+  "views": [
+    // views here
+  ]
+}
+</pre>
+
+Only <code>name</code>, <code>logo</code>, <code>slug</code> and <code>views</code> are required. <code>onClick</code> and <code>onLoad</code> are endpoints which clients are expected to POST to for data collection purposes. The POST body should contain the loaded page URI for <code>onLoad</code> or the URL of the clicked item for <code>onClick</code>.
+The current <code>version</code> is 1. <code>Slug</code> must unique for each page and set to <code>index</code> for the main channel page. 
+
+
+===Types of Views===
+	
+====ImageView====
+Self explanatory. Used for banner images, product promotions, etc. Images should be hosted on IPFS and can optionally link to a product or another page. Links may use either <code>ob://</code> (for listings, user pages, or channel pages) or <code>http://</code> (for channel pages only).
+
+<pre>
+{
+  "type": "IMAGE_VIEW",
+  "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+  "height": 275,
+  "width": 580
+} 
+</pre>
+
+====TextView====
+Display text on the page.
+
+<pre>
+{
+  "type": "TEXT_VIEW",
+  "text": "Welcome to my channel!",
+  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+  "size": 28,
+  "font": "noto sans",
+  "color": "#343434",
+  "align": "center"
+} 
+</pre>
+
+====ListingGridView====
+A 4 by x grid of listing cards. <code>Title</code> should be displayed at the top of the view. <code>Button</code> is optional and it displays at the
+bottom of the view and gives the ability to link to another page. The listing data must be included.
+
+<pre>
+{  
+   "type":"LISTING_GRID_VIEW",
+   "title":"New Listings",
+   "button":{  
+      "Text":"See More",
+      "Link":"ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page"
+   },
+   "listings":[  
+      {  
+         "vendor":{  
+            "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
+            "handle":"@yPayne",
+            "avatarHashes":{  
+               "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+               "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+            }
+         },
+         "data":{  
+            "hash":"zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+            "slug":"air-direct-amplifier",
+            "title":"Air Direct Amplifier",
+            "thumbnail":{  
+               "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ",
+               "medium":"QmS1z4qW1SiDNtLD1Bfno8WEbFUV8qwb5CQxgR6BREyVTJ"
+            },
+            "price":{  
+               "currencyCode":"btc",
+               "amount":34
+            },
+            "nsfw":true
+         }
+      }
+   ]
+}
+</pre>
+
+====PaginatedListingView====
+Similar to the ListingGridView but designed to allow a large number of listing cards to be displayed on the page by using pagination. Clients are free to decide how many listings to display per page and whether or not to offer sorting functionality.
+
+<pre>
+{  
+   "type":"PAGINATED_LISTING_VIEW",
+   "count": 200,
+   "listings":[  
+      {  
+         "vendor":{  
+            "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
+            "handle":"@yPayne",
+            "avatarHashes":{  
+               "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+               "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+            }
+         },
+         "data":{  
+            "hash":"zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+            "slug":"air-direct-amplifier",
+            "title":"Air Direct Amplifier",
+            "thumbnail":{  
+               "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ",
+               "medium":"QmS1z4qW1SiDNtLD1Bfno8WEbFUV8qwb5CQxgR6BREyVTJ"
+            },
+            "price":{  
+               "currencyCode":"btc",
+               "amount":34
+            },
+            "nsfw":true
+         }
+      }
+   ]
+}
+</pre>
+
+====UserGridView====
+A 4 by x grid of user cards. <code>Title</code> should be displayed at the top of the view. <code>Button</code> is optional and it displays at the
+bottom of the view and gives the ability to link to another page. The user profile data must be included.
+
+<pre>
+{  
+   "type":"USER_GRID_VIEW",
+   "title":"Top vendors",
+   "button":{  
+      "Text":"See More",
+      "Link":"ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page"
+   },
+   "users":[  
+      {  
+          "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
+          "handle":"yPayne.id",
+          "avatarHashes":{  
+             "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+             "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+          },
+          "headerHashes":{  
+             "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+             "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+          },
+          "shortDescription": "Webstore specialized in selling unique, interesting and high-quality..."  
+      }
+   ]
+}
+</pre>
+
+====PaginatedUserView====
+The user card equivilent of PaginatedListingView.
+
+<pre>
+{  
+   "type":"PAGINATED_USER_VIEW",
+   "count": 200,
+   "users":[  
+      {  
+          "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
+          "handle":"yPayne.id",
+          "avatarHashes":{  
+             "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+             "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+          },
+          "headerHashes":{  
+             "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
+             "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
+          },
+          "shortDescription": "Webstore specialized in selling unique, interesting and high-quality..."  
+      }
+   ]
+}
+</pre>
+
+====SlideshowView====
+A view which which rotates through the provided image views.
+
+<pre>
+{
+  "type": "SLIDESHOW_VIEW",
+  "height": 250,
+  "width": 400,
+  "images": [
+    {
+      "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page"
+    }
+  ]
+} 
+</pre>
+
+====CategoryView====
+A list of categories for the client to render. The optional field <code>breadcrumbs</code> is used to display the current nesting.
+
+<pre>
+{
+  "type": "CATEGORY_VIEW",
+  "categories": [
+    {
+      "name": "Marvel",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/marvel"
+    },
+    {
+      "name": "Spiderman",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/spiderman"
+    },
+    {
+      "name": "Superman",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/superman"
+    }
+  ],
+  "breadcrumbs": [
+    {
+      "name": "Books",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/books"
+    },
+    {
+      "name": "Comic Books",
+      "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/comic_books"
+    }
+  ]
+} 
+</pre>
+
+====HBox====
+An HBox allows ImageViews to be aligned horizontally next to each other. HBoxes can be nested inside other HBoxes or inside VBoxes. Only ImageViews, TextViews, HBoxes, and VBoxes are currently supported inside HBoxes. All other types should be ignored. 
+
+<pre>
+{
+  "type": "HBOX",
+  "padding": 10,
+  "views": [
+  	{
+	  "type": "IMAGE_VIEW",
+	  "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+	  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+	  "height": 275,
+	  "width": 580
+	},
+	{
+	  "type": "IMAGE_VIEW",
+	  "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+	  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+	  "height": 275,
+	  "width": 580
+	} 
+  ]
+} 
+</pre>
+
+====VBox====
+A VBox allows ImageViews to be aligned vertically on top of each other. VBoxes can be nested inside other VBoxes or inside HBoxes. Only ImageViews, TextViews, HBoxes, and VBoxes are currently supported inside VBoxes. All other types should be ignored. 
+
+<pre>
+{
+  "type": "VBOX",
+  "padding": 10,
+  "views": [
+  	{
+	  "type": "IMAGE_VIEW",
+	  "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+	  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+	  "height": 275,
+	  "width": 580
+	},
+	{
+	  "type": "IMAGE_VIEW",
+	  "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+	  "Link": "ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page",
+	  "height": 275,
+	  "width": 580
+	} 
+  ]
+} 
+</pre>
+
+==Loading a channel==
+
+When entering and saving a new channel a user should be able to enter either an OB URI (ob://ob1.io/channel) or HTTP URL (https://ob1.io/channel). 
+Clients should be able to fetch the main page json from either source.
+
+==Extensibility==
+Clients should ignore view types they do not know how to parse. This allows us to introduce new views without breaking old clients.
+
+==FAQ==
+<blockquote>Will the channel be slow to load and provide a bad experience?</blockquote>
+
+This OBIP calls for listing data and user data to be provided in each view which means the only loading that needs to be done is the initial JSON document and images. It would be great to make it so these views do not need to provide the data and instead it could be fetched from IPNS but current IPNS speeds are too slow for this to be feasible. As IPNS optimizations come to fruition this option can be revisted.
+
+As for initial page load, pages served over IPNS will be subject to IPNS load times but serving pages via HTTP is an option for those that care about page load speed and have the resources and technical knowledge to do so. Serving pages via HTTP also allows for dynamic page creation. 
+
+<blockquote>Given that the data must be provided with each view, wont the channel data get stale?</blockquote>
+
+For pages served via HTTP the server can build the page using the most up to date data it knows about. 
+
+For pages served via IPNS, the responsibility falls on the channel creator to update and republish their channel periodically. Implementions can fairly easily provide automated functionality to iterate over the channel data, update each listing/user with current data, and republish. How stale a channel is will be dependent on the tools one use to curate the channel and how committed they are to maintaining it. 
+
+<blockquote>Wont users see a bunch of unmaintained channels with stale data?</blockquote>
+
+Channels served via IPNS will drop out of the network after a week if the creator does not republish his data. It's unlikely stale channels will persist. Additionally this OBIP does not specify channel discovery which could itself be curated by a channel and only list well maintained channels. 
+
+<blockquote>How does a user actually curate a channel? Do they need a crawler? What tool do they use? Or is it entirely a manual process?</blockquote>
+
+Curation is not specified by this OBIP as it will depend on the tools available to the user. API calls to create, update, and publish a channel are pretty easy to create and fairly easy to use. Crawlers are not needed per se as curators can find listings via other channels or via search. Though specialized crawlers might be desireable for curating listings behind Tor, as an example. Open source crawlers that do this already exist.
+
+Less technical users will probably need to wait until UIs are created which make building channels more user friendly. Even without such UIs simply creating a JSON text file is orders of magnitude easier to do than building a search engine and a step in the right direction. 
+
+<blockquote>Is the average person going to do this? What is their incentive to do so?</blockquote>
+
+Average people creating and sharing channels would certainly improve user engagment and interaction with the app but isn't necessary for the purpose of improving the browsing experience. The user experience would still be much improved if only several big players create and maintain channels provided that there is free entry and competition. 
+
+Further, there may be a financial incentive to create a channel. It's pretty trivial right now to create a "Buy ad space on my channel" listing which may provide a revenue stream large enough to compensate for the time invested into maintaining the channel. 
+
+<blockquote>Isn't there going to be all kinds of cross platform issues when rending the channel?</blockquote>
+
+The channel schema provides the data to be displayed and a rough suggestion about how that data should be used. It's up to each client implementation to decide how best to render the data. For example, the ListingGridView might work well as a 4x2 grid on desktop, but mobile designers may choose to render it as an ImageSwitcher with swipe gestures. Futher platform specific channels can also be created, ex) ob://ob1.io/channel/mobile.
+
+<blockquote>Doesn't this design preclude things pagination and/or sorting by price/rating, etc?</blockquote>
+
+No. The PaginatedListingView and PaginatedUserView can probably hold several thousand listing/user data objects while still keeping the page to a reasonable size. Clients can paginate the listings/user cards and offer sorting as they desire. Should a page require more than one thousand listings, say, it would probably make sense, both from a UX and efficiency perspective, to break that view up into separate pages.  For example, if you are trying to build a page that contains comic book listings and you have more than one thousand comic books, you should probably break the page up into multiple pages of comic book subcategories. 
+
+
