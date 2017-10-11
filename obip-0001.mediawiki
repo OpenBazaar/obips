@@ -2,9 +2,11 @@
   OBIP: 1
   Title: OBIP Purpose and Guidelines
   Author: Tyler Smith <tyler@ob1.io>
+  Discussions-To: #obips on Slack
   Status: Accepted
   Type: Process
   Created: 2016-08-16
+  Copyright: MIT
 </pre>
 
 ==What is an OBIP?==
@@ -63,8 +65,6 @@ Each OBIP should have the following parts:
 
 * Abstract -- a short (~200 word) description of the technical issue being addressed.
 
-* Copyright/public domain -- Each OBIP must either be explicitly labelled as placed in the public domain (see this OBIP as an example) or licensed under the Open Publication License.
-
 * Specification -- The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations to exist.
 
 * Motivation -- The motivation is critical for OBIPs that want to change the OpenBazaar protocol. It should clearly explain why the existing protocol specification is inadequate to address the problem that the OBIP solves. OBIP submissions without sufficient motivation may be rejected outright.
@@ -91,11 +91,12 @@ Each OBIP must begin with an RFC 822 style header preamble. The headers must app
   OBIP: <OBIP number>
   Title: <OBIP title>
   Author: <list of authors' real names and optionally, email addrs>
-* Discussions-To: <email address>
+* Discussions-To: <Slack channel, GitHub issue or email address>
   Status: <Draft | Active | Accepted | Deferred | Rejected |
            Withdrawn | Final | Superseded>
   Type: <Standards Track | Informational | Process>
   Created: <date created on, in ISO 8601 (yyyy-mm-dd) format>
+  Copyright: MIT
 * Post-History: <dates of postings to reddit or Slack>
 * Replaces: <OBIP number>
 * Superseded-By: <OBIP number>
@@ -145,7 +146,7 @@ The current OBIP editor is Tyler Smith who can be contacted at [[mailto:tyler+ob
 
 ==OBIP Editor Responsibilities & Workflow==
 
-The OBIP editor monitors to the OpenBazaar OBIP Slack and Reddit.
+The OBIP editor monitors the OpenBazaar OBIP Slack and Reddit.
 
 For each new OBIP that comes in an editor does the following:
 
