@@ -1,5 +1,5 @@
 <pre>
-OBIP: TS-Reports
+OBIP: 6
 Title: 3rd Party Search Content reporting
 Author: Tyler Smith <tyler@ob1.io>
 Discussions-To: Github Issues, #3rd-party-search on Slack, or <tyler@ob1.io>  
