@@ -1,26 +1,20 @@
-__OBIP__: TS-Reports
-
-__Title__: 3rd Party Search Content reporting
-
-__Author__: Tyler Smith <tyler@ob1.io>
-
-__Discussions-To__: Github Issues, #3rd-party-search on Slack, or <tyler@ob1.io>  
-
-__Status__: Draft
-
-__Type__: Standards Track
-
-__Created__: 10/03/2017
-
-__Copyright__: MIT
-
+<pre>
+OBIP: TS-Reports
+Title: 3rd Party Search Content reporting
+Author: Tyler Smith <tyler@ob1.io>
+Discussions-To: Github Issues, #3rd-party-search on Slack, or <tyler@ob1.io>  
+Status: Draft
+Type: Standards Track
+Created: 10/03/2017
+Copyright: MIT
+</pre>
 
 ## Abstract
 A specification for the API a search provider should comply with to handle client reports for content.
 
 
 ## Motivation
-Search providers have variying content policies and need a way to get reports of infringing content. This Proposal suggests an API for managing these reports.
+Search providers have varying content policies and need a way to get reports of infringing content. This Proposal suggests an API for managing these reports.
 
 It is upon providers to handle reports according to their policies.
 
