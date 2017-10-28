@@ -42,7 +42,6 @@ The channel schema consists of a JSON object containing some metadata and a list
   "logo": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
   "slug": "index",
   "lastUpdated": ""2017-09-28T03:15:51.785762669Z",
-  "searchEndpoint": "https://search.ob1.io/search/listings",
   "onClick": "https://clickdata.ob1.io/channel",
   "onLoad": "https://loaddata.ob1.io/channel",
   "version": 1,
@@ -71,6 +70,9 @@ Self explanatory. Used for banner images, product promotions, etc. Images should
 } 
 </pre>
 
+Example:
+<img src="https://i.imgur.com/7uxShH5.png"/>
+
 ====TextView====
 Display text on the page.
 
@@ -86,53 +88,16 @@ Display text on the page.
 } 
 </pre>
 
-====ListingGridView====
-A 4 by x grid of listing cards. <code>Title</code> should be displayed at the top of the view. <code>Button</code> is optional and it displays at the
-bottom of the view and gives the ability to link to another page. The listing data must be included.
+Example:
+
+<img src="https://i.imgur.com/sIx9l29.png"/>
+
+====ListingView====
+This view is designed to allow a large number of listing cards to be displayed on the page by using pagination. Clients are free to decide how many listings to display per page and whether or not to offer sorting functionality.
 
 <pre>
 {  
-   "type":"LISTING_GRID_VIEW",
-   "title":"New Listings",
-   "button":{  
-      "Text":"See More",
-      "Link":"ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page"
-   },
-   "listings":[  
-      {  
-         "vendor":{  
-            "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
-            "handle":"@yPayne",
-            "avatarHashes":{  
-               "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
-               "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
-            }
-         },
-         "data":{  
-            "hash":"zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
-            "slug":"air-direct-amplifier",
-            "title":"Air Direct Amplifier",
-            "thumbnail":{  
-               "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ",
-               "medium":"QmS1z4qW1SiDNtLD1Bfno8WEbFUV8qwb5CQxgR6BREyVTJ"
-            },
-            "price":{  
-               "currencyCode":"btc",
-               "amount":34
-            },
-            "nsfw":true
-         }
-      }
-   ]
-}
-</pre>
-
-====PaginatedListingView====
-Similar to the ListingGridView but designed to allow a large number of listing cards to be displayed on the page by using pagination. Clients are free to decide how many listings to display per page and whether or not to offer sorting functionality.
-
-<pre>
-{  
-   "type":"PAGINATED_LISTING_VIEW",
+   "type":"LISTING_VIEW",
    "count": 200,
    "listings":[  
       {  
@@ -163,47 +128,23 @@ Similar to the ListingGridView but designed to allow a large number of listing c
 }
 </pre>
 
-====UserGridView====
-A 4 by x grid of user cards. <code>Title</code> should be displayed at the top of the view. <code>Button</code> is optional and it displays at the
-bottom of the view and gives the ability to link to another page. The user profile data must be included.
+Example (Only displaying two rows because of space. Actual views will likely want 8-10 rows):
+<img src="https://i.imgur.com/cCvYrOO.png"/>
+
+====UserView====
+The user card equivilent of ListingView.
 
 <pre>
 {  
-   "type":"USER_GRID_VIEW",
-   "title":"Top vendors",
-   "button":{  
-      "Text":"See More",
-      "Link":"ob://QmYj1ojj3cRKrmkQR3o8KtPqmTbgsZWsgq5grpUpAbjiYx/channel/another_channel_page"
-   },
-   "users":[  
-      {  
-          "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
-          "handle":"yPayne.id",
-          "avatarHashes":{  
-             "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
-             "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
-          },
-          "headerHashes":{  
-             "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
-             "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
-          },
-          "shortDescription": "Webstore specialized in selling unique, interesting and high-quality..."  
-      }
-   ]
-}
-</pre>
-
-====PaginatedUserView====
-The user card equivilent of PaginatedListingView.
-
-<pre>
-{  
-   "type":"PAGINATED_USER_VIEW",
+   "type":"USER_VIEW",
    "count": 200,
+   "label": "vendors",
    "users":[  
       {  
           "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
-          "handle":"yPayne.id",
+          "handle":"urbanart.id",
+	  "name": "Urban Art",
+          "location": "London",
           "avatarHashes":{  
              "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
              "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
@@ -217,6 +158,9 @@ The user card equivilent of PaginatedListingView.
    ]
 }
 </pre>
+
+Example: (Only displaying two rows because of space. Actual views will likely want 8-10 rows):
+<img src="https://i.imgur.com/iWurcow.png"/>
 
 ====SlideshowView====
 A view which which rotates through the provided image views.
@@ -234,6 +178,10 @@ A view which which rotates through the provided image views.
   ]
 } 
 </pre>
+
+Example:
+
+<img src="https://i.imgur.com/kjyJTtC.png"/>
 
 ====CategoryView====
 A list of categories for the client to render. The optional field <code>breadcrumbs</code> is used to display the current nesting.
@@ -268,8 +216,25 @@ A list of categories for the client to render. The optional field <code>breadcru
 } 
 </pre>
 
+Example:
+<img src="https://i.imgur.com/F4sUgVr.png"/>
+
+====SearchView====
+The optional search view renders a search box which will use the given API endpoint.
+
+<pre>
+{
+  "type": "SEARCH_VIEW",
+  "api": "https://search.ob1.io/search/listings",
+  "imageHash": "zb2rhcQdW4Jb9YmJUASEumQg4xetuc9tob9Hofn24g74c12p7",
+  "placeHolder:" "Enter a search term or #tag"
+} 
+</pre>
+Example:
+<img src="https://i.imgur.com/USRG8ET.png"/>
+
 ====HBox====
-An HBox allows ImageViews to be aligned horizontally next to each other. HBoxes can be nested inside other HBoxes or inside VBoxes. Only ImageViews, TextViews, HBoxes, and VBoxes are currently supported inside HBoxes. All other types should be ignored. 
+An HBox allows ImageViews to be aligned horizontally next to each other. HBoxes can be nested inside other HBoxes or inside VBoxes. Only ImageViews, TextViews, HBoxes, and VBoxes are currently supported inside HBoxes. All other types should be ignored.
 
 <pre>
 {
@@ -293,6 +258,9 @@ An HBox allows ImageViews to be aligned horizontally next to each other. HBoxes 
   ]
 } 
 </pre>
+
+Example:HBox with two ImageViews
+<img src="https://i.imgur.com/STHBXJG.png"/>
 
 ====VBox====
 A VBox allows ImageViews to be aligned vertically on top of each other. VBoxes can be nested inside other VBoxes or inside HBoxes. Only ImageViews, TextViews, HBoxes, and VBoxes are currently supported inside VBoxes. All other types should be ignored. 
@@ -319,6 +287,9 @@ A VBox allows ImageViews to be aligned vertically on top of each other. VBoxes c
   ]
 } 
 </pre>
+
+Example: Two HBoxes inside a VBox
+<img src="https://i.imgur.com/Sseis5f.png"/>
 
 ==Loading a channel==
 
@@ -363,6 +334,6 @@ The channel schema provides the data to be displayed and a rough suggestion abou
 
 <blockquote>Doesn't this design preclude things pagination and/or sorting by price/rating, etc?</blockquote>
 
-No. The PaginatedListingView and PaginatedUserView can probably hold several thousand listing/user data objects while still keeping the page to a reasonable size. Clients can paginate the listings/user cards and offer sorting as they desire. Should a page require more than one thousand listings, say, it would probably make sense, both from a UX and efficiency perspective, to break that view up into separate pages.  For example, if you are trying to build a page that contains comic book listings and you have more than one thousand comic books, you should probably break the page up into multiple pages of comic book subcategories. 
+No. The ListingView and UserView can probably hold several thousand listing/user data objects while still keeping the page to a reasonable size. Clients can paginate the listings/user cards and offer sorting as they desire. Should a page require more than one thousand listings, say, it would probably make sense, both from a UX and efficiency perspective, to break that view up into separate pages.  For example, if you are trying to build a page that contains comic book listings and you have more than one thousand comic books, you should probably break the page up into multiple pages of comic book subcategories. 
 
 
