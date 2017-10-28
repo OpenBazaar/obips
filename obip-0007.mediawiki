@@ -142,7 +142,9 @@ The user card equivilent of ListingView.
    "users":[  
       {  
           "id":"QmWBSdbs7LLR7BdFgtKQA7CUq8aCzoTi74V7UwiwvfYpU5",
-          "handle":"yPayne.id",
+          "handle":"urbanart.id",
+	  "name": "Urban Art",
+          "location": "London",
           "avatarHashes":{  
              "tiny":"QmTHCaDpznJStWvPUSiKNDd53VVZmPtnrHx5diGP5gskCx",
              "small":"QmfVecQaoy1pZD3wsHHC82kYg24yhVaqBsAzm5aJCabXPQ"
