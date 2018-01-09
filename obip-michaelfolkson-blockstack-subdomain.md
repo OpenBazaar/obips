@@ -1,0 +1,44 @@
+<pre>
+  OBIP: <OBIP number>
+  Title: Blockstack Subdomain
+  Author: Michael Folkson <michael@riskbazaar.org>
+  Discussions-To: #blockstack on Slack, GitHub Issues or michael@riskbazaar.org
+  Status: Draft
+  Type: Standards Track
+  Created: 2017-10-10
+  Copyright: MIT
+</pre>
+
+## Abstract
+OpenBazaar 1.0 included an integration to allow users to sign up for a Blockstack ID (a human readable handle) to link to their OpenBazaar ID (a machine readable cryptographic hash). However, to register a Blockstack ID required a significant time delay and high transaction fees. To address this the Blockstack core developers have designed and implemented subdomains which allow users to sign up for names cheaply and quickly. The proposed plan is to build an integration such that OpenBazaar users can sign up for subdomains under a OpenBazaar domain within the OpenBazaar app.
+
+## Specification
+The Blockstack subdomain design and implementation is outlined [here](https://github.com/blockstack/blockstack-core/blob/master/docs/subdomains.md).
+
+Aaron Blankstein from Blockstack also explained Blockstack subdomains [here](https://www.youtube.com/watch?v=gF2MvCsdWtY&list=PLXS8JJHIn4nEv_LcXIaklH_QAZaDEVD8q&index=29).
+
+It is not yet decided what the domain will be but we will proceed assuming that the domain is `openbazaar` (e.g. John Smith will have the subdomain `johnsmith.openbazaar.id`). It is also possible that for user convenience `openbazaar.id` maps to something shorter such as `.ob` such that John Smith's identity on OpenBazaar would be `johnsmith.ob`.
+
+## Motivation
+An identity system for OpenBazaar has numerous benefits.
+
+1) It will make it easier for users to search and find particular stores as they will be able to search for `johnsmith.ob` rather than a non human readable cryptographic hash.
+
+2) It will make it more difficult for a store to impersonate another store. Only one user would own the `johnsmith.ob` OpenBazaar subdomain and so it would be more difficult for another user to impersonate them. With no unique human readable names, users are required to compare cryptographic hashes to spot impersonators.
+
+3) An identity system is generally the foundational layer for a reputation system. It will give users (if willing) the opportunity to link their OpenBazaar ID to other online identities so that other users can be sure of who they are transacting with. Reputation scores can be built up that are cryptographically linked to these identities by receiving feedback from other users. If users are limited to one (or a small number) of identities, it is more difficult to build up fraudulent reputation scores using sybils. Ratings and reviews from users with a OpenBazaar subdomain could be given greater weight than anonymous ratings or at least this information could be presented to users when assessing other users' reputations. To maximize the reliability of the reputation system, it is paramount that all tools are presented to users.
+
+It is important to state that signing up for a OpenBazaar subdomain would be completely optional and would not be a prerequisite to using the OpenBazaar protocol. Everyone is free to use OpenBazaar in whatever way they choose. Those who seek to transact pseudonymously or anonymously using the Tor integration will have no restrictions placed upon them. This proposal is only of interest to those who seek to prove their online identities to other users and/or to build reputation scores that aren't easily gamed by using sybils.
+
+## Rationale
+There are other blockchain based identity systems such as ENS (Ethereum Name Service) and Civic. There are also centralized identity systems such as Keybase, Earn.com and Netki that are associated with Bitcoin addresses. It is possible that future versions of OpenBazaar could integrate other identity systems in addition to Blockstack. It makes sense at this time to integrate a Blockstack identity solution due to the ability for users to fully control and own their identities, the fact that OpenBazaar 1.0 users and developers are familiar with Blockstack, Blockstack's agnosticism to the underlying blockchain and Blockstack's track record in releasing stable software and high quality research papers.
+
+## Backwards Compatibility
+There should be no backwards compatibility issues. Given users of OpenBazaar 1.0 signed up for Blockstack IDs (e.g. johnsmith.id), we aim to facilitate signing up for both a OpenBazaar subdomain and linking this OpenBazaar subdomain to a user's Blockstack ID.
+
+## Reference Implementation
+
+
+
+
+
