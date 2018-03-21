@@ -5,9 +5,9 @@ Having an OBIP here does not make it a formally accepted standard until its stat
 | Number | Title |  Owner | Type | Status |
 |:-------|:------|:-------|:-----|:-------|
 | [1](./obip-0001.mediawiki) | OBIP Purpose and Guidelines | Tyler Smith | Process | Accepted
-| [2](./obip-0002.md) | 3rd Party Search | Tyler Smith | Standards | Draft
+| [2](./obip-0002.md) | 3rd Party Search | Tyler Smith | Standards | Accepted
 | [3](./obip-0003.mediawiki) | Channels | Chris Pacia | Standards | Draft
-| [4](./obip-0004.md) | Posts | Washington Sanchez | Standards | Draft
+| [4](./obip-0004.md) | Posts | Washington Sanchez | Standards | Accepted
 | [5](./obip-0005.md) | Classifieds | Washington Sanchez | Standards | Draft
-| [6](./obip-0006.md) | 3rd Party Content Reporting | Tyler Smith | Standards | Draft
-| [8](./obip-0008.md) | 3rd Party Verified Moderators | Tyler Smith | Standards | Draft
+| [6](./obip-0006.md) | 3rd Party Content Reporting | Tyler Smith | Standards | Accepted
+| [8](./obip-0008.md) | 3rd Party Verified Moderators | Tyler Smith | Standards | Accepted
